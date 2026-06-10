@@ -9,6 +9,7 @@ const userSchema = new Schema(
     bio: { type: String, default: "", maxlength: 150 },
     status: { type: String, enum: ["online", "offline"], default: "offline" },
     lastSeen: { type: Date, default: Date.now },
+    blockedUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

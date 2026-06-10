@@ -149,6 +149,25 @@ export const getUsersWithConversation = async (req, res) => {
   }
 };
 
+// Get blocked users
+export const getBlockedUsers = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) return res.status(400).json({ error: "userId required" });
+
+    const user = await User.findById(userId)
+      .populate("blockedUsers", "_id username email avatar lastSeen status")
+      .select("blockedUsers");
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json({ blockedUsers: user.blockedUsers });
+  } catch (error) {
+    console.error("getBlockedUsers error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export const getUserProfile = async (req, res) => {
   try {
     const { id } = req.params;
@@ -231,5 +250,6 @@ export default {
   getUsersWithConversation,
   getUserProfile,
   getSharedMedia,
+  getBlockedUsers,
   updateProfile,
 };
