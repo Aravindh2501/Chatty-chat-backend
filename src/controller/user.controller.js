@@ -4,7 +4,6 @@ import Conversation from "../model/conversation-model.js";
 import Message from "../model/message-model.js";
 import { generateToken } from "../utils/token-utils.js";
 
-// Register
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -43,7 +42,6 @@ export const register = async (req, res) => {
   }
 };
 
-// Login
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -78,7 +76,6 @@ export const login = async (req, res) => {
   }
 };
 
-// Logout
 export const logout = async (req, res) => {
   try {
     if (req.user?.id) {
@@ -94,7 +91,6 @@ export const logout = async (req, res) => {
   }
 };
 
-// Get current user / check auth
 export const checkAuth = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -105,7 +101,6 @@ export const checkAuth = async (req, res) => {
   }
 };
 
-// Search users
 export const getAllUsers = async (req, res) => {
   try {
     const { userId, search } = req.query;
@@ -124,7 +119,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// Get users with recent conversations (sidebar)
 export const getUsersWithConversation = async (req, res) => {
   try {
     const { userId } = req.query;
@@ -155,7 +149,6 @@ export const getUsersWithConversation = async (req, res) => {
   }
 };
 
-// Get a user's public profile by ID
 export const getUserProfile = async (req, res) => {
   try {
     const { id } = req.params;
@@ -168,7 +161,6 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// Get shared media between two users (images + videos)
 export const getSharedMedia = async (req, res) => {
   try {
     const { userId, otherUserId } = req.query;
@@ -187,7 +179,6 @@ export const getSharedMedia = async (req, res) => {
       .select("content type createdAt senderId")
       .sort({ createdAt: -1 });
 
-    // Flatten all content items
     const media = messages.flatMap((msg) =>
       msg.content.map((c) => ({
         url: c.url,
@@ -205,7 +196,6 @@ export const getSharedMedia = async (req, res) => {
   }
 };
 
-// Update profile
 export const updateProfile = async (req, res) => {
   const { id } = req.params;
   const { avatar, username, bio } = req.body;
